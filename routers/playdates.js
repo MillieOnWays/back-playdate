@@ -15,4 +15,18 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+router.get("/:id", async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    const playdateDetails = await Playdate.findByPk(id, {
+      include: { model: User, attributes: ["name", "avatar"] },
+    });
+    res.send(playdateDetails);
+  } catch (e) {
+    console.log("The error:", e);
+    next(e);
+  }
+});
+
 module.exports = router;
