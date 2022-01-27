@@ -1,5 +1,6 @@
 "use strict";
 
+const { keepalives_idle } = require("pg/lib/defaults");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
@@ -9,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      user.hasMany(models.kid);
+      user.hasMany(models.playdate);
     }
   }
   user.init(

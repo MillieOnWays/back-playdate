@@ -8,14 +8,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      kid.belongsTo(models.user);
+      kid.hasMany(models.interest);
     }
   }
   kid.init(
     {
       name: { type: DataTypes.STRING, allowNull: false },
       avatar: DataTypes.STRING,
-      birthDate: { type: DataTypes.DATE, allowNull: false },
+      birthDate: { type: DataTypes.DATEONLY, allowNull: false },
       gender: { type: DataTypes.STRING, allowNull: false },
     },
     {
