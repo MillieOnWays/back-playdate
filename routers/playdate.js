@@ -6,7 +6,7 @@ const Playdate = require("../models").playdate;
 const router = new Router();
 
 router.post("/:id", async (req, res) => {
-  const { id } = req.params.id;
+  
   const {
     name,
     date,
@@ -39,7 +39,7 @@ router.post("/:id", async (req, res) => {
       city,
       tag,
       description,
-      userId: id,
+      userId: req.params.id,
     });
     console.log("new playdate", newPlaydate);
     res.send(newPlaydate);
