@@ -52,7 +52,7 @@ router.post("/:id", async (req, res) => {
     endTime,
     address,
     city,
-    imageUrl,
+    image,
     tag,
     description,
   } = req.body;
@@ -75,6 +75,7 @@ router.post("/:id", async (req, res) => {
       endTime,
       address,
       city,
+      image,
       tag,
       description,
       userId: req.params.id,
