@@ -20,7 +20,7 @@ router.get("/:id", async (req, res, next) => {
     const id = parseInt(req.params.id);
 
     const playdateDetails = await Playdate.findByPk(id, {
-      include: { model: User, attributes: ["name", "avatar"] },
+      include: [User],
     });
     res.send(playdateDetails);
   } catch (e) {
