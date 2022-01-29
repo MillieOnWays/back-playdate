@@ -1,32 +1,28 @@
 "use strict";
-
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert(
-      "kids",
-      [
-        {
-          name: "jonny test",
-          birthDate: "2019-01-02",
-          gender: "m",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          userId: 1,
-        },
-        {
-          name: "Lili test2",
-          birthDate: "2018-07-16",
-          gender: "f",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          userId: 2,
-        },
-      ],
-      {}
-    );
-  },
-
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete("kids", null, {});
-  },
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class kid extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      kid.belongsTo(models.user);
+      kid.hasMany(models.interest, { foreignKey: "kidId" });
+    }
+  }
+  kid.init(
+    {
+      name: { type: DataTypes.STRING, allowNull: false },
+      avatar: DataTypes.STRING,
+      birthDate: { type: DataTypes.DATEONLY, allowNull: false },
+      gender: { type: DataTypes.STRING, allowNull: false },
+    },
+    {
+      sequelize,
+      modelName: "kid",
+    }
+  );
+  return kid;
 };

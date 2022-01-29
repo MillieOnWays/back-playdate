@@ -51,6 +51,7 @@ app.post("/authorized_post_request", authMiddleWare, (req, res) => {
     },
   });
 });
+app.use("/parent", parentRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
