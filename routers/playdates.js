@@ -7,8 +7,23 @@ const router = new Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const playdates = await Playdate.findAll();
-    res.send(playdates);
+    const limit = req.query.limit || 10;
+    const offset = req.query.offset || 0;
+    const order = req.query.order || "DESC";
+    const by = req.query.by || "createdAt";
+    const playdates = await Playdate.findAndCountAll({
+      limit,
+      offset,
+      include: [
+        {
+          model: User,
+          where: Playdate.userId === User.id,
+          attributes: { exclude: ["password", "email"] },
+        },
+      ],
+      order: [[by, order]],
+    });
+    res.status(200).send({ message: "ok", playdates });
   } catch (e) {
     console.log(e.message);
     next(e);
@@ -37,7 +52,7 @@ router.post("/:id", async (req, res) => {
     endTime,
     address,
     city,
-    imageUrl,
+    image,
     tag,
     description,
   } = req.body;
@@ -60,6 +75,7 @@ router.post("/:id", async (req, res) => {
       endTime,
       address,
       city,
+      image,
       tag,
       description,
       userId: req.params.id,
