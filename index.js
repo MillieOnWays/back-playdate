@@ -4,6 +4,7 @@ const corsMiddleWare = require("cors");
 const authMiddleWare = require("./auth/middleware");
 const authRouter = require("./routers/auth");
 const { PORT } = require("./config/constants");
+const playdateRouter = require("./routers/playdates");
 
 const parentRouter = require("./routers/parent");
 
@@ -34,6 +35,7 @@ app.use(bodyParserMiddleWare);
  */
 
 app.use("/auth", authRouter);
+app.use("/playdates", playdateRouter);
 
 // POST endpoint which requires a token for testing purposes, can be removed
 app.post("/authorized_post_request", authMiddleWare, (req, res) => {
@@ -57,4 +59,3 @@ app.use("/parent", parentRouter);
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });
-
