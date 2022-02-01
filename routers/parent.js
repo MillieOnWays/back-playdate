@@ -79,4 +79,19 @@ router.patch("/kid", async (req, res, next) => {
   }
 });
 
+router.delete("/kids/:kidId", async (req, res) => {
+  try {
+    const kidId = req.params.kidId;
+    const deleteKid = await Kid.findByPk(kidId);
+    console.log("delete kid?", deleteKid);
+    if (!deleteKid) {
+      return res.status(404).send("Kid not found");
+    }
+    await deleteKid.destroy();
+    res.send({ message: "Ok", kidId });
+  } catch (e) {
+    console.log(e.message);
+  }
+});
+
 module.exports = router;
