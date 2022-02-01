@@ -61,6 +61,8 @@ router.get("/:id", async (req, res, next) => {
     const playdateDetails = await Playdate.findByPk(id, {
       include: [User],
     });
+    delete playdateDetails.user.dataValues["password"];
+    delete playdateDetails.user.dataValues["email"];
     res.send(playdateDetails);
   } catch (e) {
     console.log("The error:", e);
