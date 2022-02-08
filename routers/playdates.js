@@ -7,10 +7,34 @@ const router = new Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const limit = req.query.limit || 10;
-    const offset = req.query.offset || 0;
-    const order = req.query.order || "DESC";
-    const by = req.query.by || "createdAt";
+    // const limit = req.query.limit || 100;
+    // const offset = req.query.offset || 0;
+    // const order = req.query.order || "DESC";
+    // const by = req.query.by || "createdAt";
+    // const city = req.query.city;
+    const by = "date";
+    const limit = 100;
+    const offset = 0;
+
+    // Old filter if City filter is given
+    //const playdates =
+    // city
+    //   ? await Playdate.findAndCountAll({
+    //       limit,
+    //       offset,
+    //       where: {
+    //         city: city,
+    //       },
+    //       include: [
+    //         {
+    //           model: User,
+    //           where: Playdate.userId === User.id,
+    //           attributes: { exclude: ["password", "email"] },
+    //         },
+    //       ],
+    //       order: [[by, order]],
+    //     })
+    //   :
     const playdates = await Playdate.findAndCountAll({
       limit,
       offset,
@@ -21,7 +45,7 @@ router.get("/", async (req, res, next) => {
           attributes: { exclude: ["password", "email"] },
         },
       ],
-      order: [[by, order]],
+      order: [[by]],
     });
     res.status(200).send({ message: "ok", playdates });
   } catch (e) {
@@ -37,6 +61,8 @@ router.get("/:id", async (req, res, next) => {
     const playdateDetails = await Playdate.findByPk(id, {
       include: [User],
     });
+    delete playdateDetails.user.dataValues["password"];
+    delete playdateDetails.user.dataValues["email"];
     res.send(playdateDetails);
   } catch (e) {
     console.log("The error:", e);
